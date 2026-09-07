@@ -2,7 +2,7 @@
 
 我手里这台 ALC A1260 原来跑的是定制 Android 8。机器还能用，但系统太老，很多新应用已经不支持。前后折腾了不少次，最后把 Android 11 跑稳了：Wi-Fi、蓝牙、扬声器、红外、下载和屏保都能正常用。
 
-这次放出来的 `system` 和 `boot` 是从这台正常使用的 A1260 上完整读出来的，不是随便找的 MT6580 通刷包。Square Home、音量君和遥控精灵也一起整理好了。桌面布局保留，遥控精灵里的账号和旧遥控器已经清空，刷完的人自己登录、自己学习红外就行。
+这次放出来的 `system` 和 `boot` 是从这台正常使用的 A1260 上完整读出来的，不是随便找的 MT6580 通刷包。Square Home、音量君和遥控精灵也一起整理好了。桌面布局保留，遥控精灵、自己学习红外就行。
 
 ## 下载固件
 
@@ -28,7 +28,7 @@ SHA-256：`81a47cc8a40bb21abbc925002d20c99e883585783d6a039e31e01f5acf8a1c50`
 
 完整解压 ZIP。下载过程不稳定，或者文件经过网盘转存时，可以双击 `1-检查固件.cmd` 检查一次；这一步只检查文件，不会刷机，可以跳过。
 
-Windows 自带的 PowerShell 5.1 就能运行检查，不需要安装 `pwsh`。手动命令是：
+Windows 自带的 PowerShell 5.1 就能运行检查。手动命令是：
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\verify-package.ps1
@@ -106,17 +106,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup\post-install.ps1
 ### 刷完卡开机或黑屏
 
 先检查文件 SHA 和写入地址，不要连续换包乱刷。刷机前应备份自己设备的 boot 和 system；需要回滚时，用同一组地址写回自己的备份。公开包不带原厂备份，也不要拿别人的 NVRAM、protect 或 userdata 来刷。
-
-## 隐私处理
-
-公开包保留 Square Home 当前桌面布局和显示设置。以下内容已经删除：
-
-- Wi-Fi 密码和网络名称；
-- 蓝牙配对记录；
-- 设备序列号和唯一标识；
-- 遥控精灵的 2 个账号、token；
-- 5 个旧遥控器、193 个按键、26 条红外码、6 个场景；
-- NVRAM、nvdata、protect、userdata、日志、缓存和截图原始数据。
 
 ## 实机效果
 
