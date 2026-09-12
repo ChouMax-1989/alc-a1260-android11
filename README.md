@@ -1,122 +1,55 @@
-# ALC A1260 Android 11 实机固件
+# ALC / AIC A1260 Android 11 固件 v1.1.0
 
-我手里这台 ALC A1260 原来跑的是定制 Android 8。机器还能用，但系统太老，很多新应用已经不支持。前后折腾了不少次，最后把 Android 11 跑稳了：Wi-Fi、蓝牙、扬声器、红外、下载和屏保都能正常用。
+这是一套给 **A1260（MT6580、ARM32 Binder32）** 使用的非官方 Android 11 完整刷机包。包含已验证的 boot/system 镜像、遥控器桌面恢复资料，以及这次修好的大字时钟和自动屏保设置。
 
-这次放出来的 `system` 和 `boot` 是从这台正常使用的 A1260 上完整读出来的，不是随便找的 MT6580 通刷包。Square Home、音量君和遥控精灵也一起整理好了。桌面布局保留，遥控精灵、自己学习红外就行。
+**本固件不包含小智 AI，也不会安装、升级、卸载或改动你自行安装的小智。**
 
-## 下载固件
+## 下载
 
-- [v1.0.1 发布页](https://github.com/ChouMax-1989/alc-a1260-android11/releases/tag/v1.0.1)
-- [直接下载完整 ZIP](https://github.com/ChouMax-1989/alc-a1260-android11/releases/download/v1.0.1/ALC-A1260-Android11-v1.0.1.zip)
-- [下载 SHA-256 文件](https://github.com/ChouMax-1989/alc-a1260-android11/releases/download/v1.0.1/ALC-A1260-Android11-v1.0.1.zip.sha256)
+- [v1.1.0 发布页](https://github.com/ChouMax-1989/alc-a1260-android11/releases/tag/v1.1.0)
+- [下载完整固件 ZIP](https://github.com/ChouMax-1989/alc-a1260-android11/releases/download/v1.1.0/ALC-A1260-Android11-v1.1.0.zip)
+- [下载 ZIP 的 SHA-256 校验文件](https://github.com/ChouMax-1989/alc-a1260-android11/releases/download/v1.1.0/ALC-A1260-Android11-v1.1.0.zip.sha256)
 
-完整包大小：733,065,028 字节  
-SHA-256：`81a47cc8a40bb21abbc925002d20c99e883585783d6a039e31e01f5acf8a1c50`
+大小：**733,102,190 字节**。SHA-256：
 
-## 需要的工具
-
-- [Android platform-tools 官方页面](https://developer.android.com/tools/releases/platform-tools)
-- [Windows platform-tools 官方直链](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
-- [MediaTek PreLoader USB VCOM 驱动：Microsoft Update Catalog](https://www.catalog.update.microsoft.com/Search.aspx?q=MediaTek%20PreLoader%20USB%20VCOM)
-- [SP Flash Tool：MediaTek 官方工具门户](https://online.mediatek.com/English/Tool)
-
-我实际使用的是 SP Flash Tool v5.2032。其他版本也许能用，但先确认界面里有 `Advanced Mode > Write Memory`。不要加载陌生的 scatter、preloader 或 DA。
-
-## 最简单的刷法
-
-### 1. 解压固件
-
-完整解压 ZIP。下载过程不稳定，或者文件经过网盘转存时，可以双击 `1-检查固件.cmd` 检查一次；这一步只检查文件，不会刷机，可以跳过。
-
-Windows 自带的 PowerShell 5.1 就能运行检查。手动命令是：
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\verify-package.ps1
+```text
+2a923e8a5fcee368fc055c0b90ccf8bd0bd0f216b425933d16adfc2a498af12b
 ```
 
-看到“全部通过”表示文件没有损坏。
+请下载上面的完整固件 ZIP。GitHub 自动生成的“Source code”压缩包只有说明和清单，**没有系统镜像**。
 
-### 2. 写 boot
+## 这次修好了什么
 
-1. 打开 `flash_tool.exe`。
-2. 切到 `Advanced Mode`。
-3. 点 `Window > Write Memory`。
-4. `Region` 选 `EMMC_USER`。
-5. `Begin Address` 填 `0x01D20000`。
-6. 文件选 `firmware\a1260-boot-android11-usap-v1.img`。
-7. 点 `Write Memory`。
-8. 把 A1260 完全关机，再直接插 USB。不要按音量键。
-9. 看到绿色完成标志后拔线。
+- **座充自动屏保**：充电时闲置约30秒进入屏保。
+- **大字时钟**：亮白的大号时间，完整日期和星期，触摸即可退出。
+- **音量工具干扰**：如果 VolumeMan 的“更多 → 输出源”开着，会反复重置闲置计时。更新会关闭这一项，保留应用和其他设置；之后可重新打开音量工具使用音量增强，不要再打开输出源。
+- **保留数据的更新入口**：现有设备只更新时钟和屏保配置，不必重刷，不重置个人桌面、遥控器和账号。
 
-### 3. 写 system
+![大字时钟屏保实机效果](images/clock-screensaver.png)
 
-仍在 `Write Memory` 页面：
+## 已经在用本项目的 Android 11
 
-1. `Region` 还是 `EMMC_USER`。
-2. `Begin Address` 改成 `0x0A800000`。
-3. 文件选 `firmware\a1260-android11-system-current.img`。
-4. 点 `Write Memory`。
-5. 设备完全关机，再插 USB。
-6. 看到绿色完成标志后拔线开机。
+1. 解压完整固件 ZIP 到一个新文件夹。
+2. 下载 [Android platform-tools](https://developer.android.com/tools/releases/platform-tools)，把 `platform-tools` 文件夹放到解压目录中。
+3. 设备打开 USB 调试并连接电脑，确认授权。
+4. 双击 **`3-更新现有设备.cmd`**，按提示输入目标设备的 ADB 序列号。
 
-就写这两个分区。不要选 `Download`、`Firmware Upgrade` 或 `Format All + Download`，也不要写 recovery、preloader、NVRAM、userdata 等其他分区。
+这个入口只安装大字时钟和应用屏保修正，不刷分区、不重启、不清理现有应用数据。安装器会检查 Android 11、ARMv7、MT6580、root 权限及本项目 A1260 boot 的精确哈希；名字显示为 `phh` 的本机 GSI 也可正确识别。
 
-### 4. 第一次开机
+## 第一次刷入，或明确要重装
 
-第一次开机会慢一些。进入 Android 11 桌面后打开 USB 调试，把下载好的 `platform-tools` 文件夹放到固件包根目录，然后双击 `2-首次开机配置.cmd`。脚本自己会先检查需要的文件，不用另外运行 `-StaticValidate`。
+请按 [完整刷机与配置说明](docs/INSTALL.md) 操作。刷写仅使用已验证的 SP Flash Tool `Advanced Mode → Write Memory` 地址，并进行完整 Readback 校验。
 
-手动命令是：
+进入 Android 11 后，双击 **`2-首次开机配置.cmd`**。这条路径会恢复公开的 Square Home 布局和干净 iControl 数据，**会清空这两个应用已有的数据**。已有个人桌面、遥控器或账号时，请使用上面的旧机更新入口。
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\setup\post-install.ps1
-```
+不要选择 `Format All + Download`，不要写入别人的 NVRAM、protect、userdata 或整机备份。
 
-脚本会完成这些事：
+## 验证范围
 
-- 安装 Square Home 2.1.14 和遥控精灵 5.2.5；
-- 恢复现在这套 Square Home 桌面布局；
-- 安装红外和 FUSE 存储修复；
-- 关闭电话、通讯录、图库等遥控器用不到的应用；
-- 打开系统屏保；
-- 重启并检查红外、Wi-Fi、蓝牙、Download 和桌面。
+boot/system 与当前实机的分区哈希一致。这次沿用这些镜像，新增修正通过应用和配置脚本完成；没有把它说成重新编译的系统或一次新的空白设备整机刷写验收。
 
-遥控精灵打开后是退出登录、没有遥控器的干净状态。登录自己的账号，添加设备，再学习自己的红外即可。
+旧机更新脚本已在现机执行通过，更新前后6份既有数据文件哈希一致；时钟显示、自动进入和退出已实测，用户已确认效果。完整包43个文件，42项哈希及ZIP CRC检查通过。
 
-## 想更稳一点：写完做 Readback
+首次清空并恢复干净 profile 没有在源设备上执行，以免破坏原有个人数据。原厂完整屏保 APK、DEX、分析文件、账号、录音、Wi-Fi 密码和个人红外码均不在包内。
 
-简单刷法到绿色完成标志就可以继续。如果这是第一次刷这类机器，建议多做一次回读校验：
-
-| 分区 | 起始地址 | 长度 | 正确 SHA-256 |
-|---|---|---|---|
-| boot | `0x01D20000` | `0x01000000` | `52adc739311293263f5e2b322628a6768385b88c65351b1203eae1c3f0982878` |
-| system | `0x0A800000` | `0x60000000` | `984faeb4df4415e02b1d791158392a091abe67f815d7892ac14f46cd80662385` |
-
-在 SP Flash Tool 的 `Readback` 页面按上表读取完整区间。回读文件的 SHA-256 一致，说明写入没有断线或损坏。
-
-## 常见问题
-
-### 提示 PMT changed
-
-说明你走到了 `Download` 流程。关掉它，回到 `Advanced Mode > Window > Write Memory`，只按上面的两个地址写。
-
-### 关机插线没反应
-
-先检查 MediaTek PreLoader USB VCOM 驱动和数据线。A1260 不需要按音量键，也不用拆机短接。先在 SP Flash Tool 里点写入，再让设备完全关机后插线。
-
-### 刷完卡开机或黑屏
-
-先检查文件 SHA 和写入地址，不要连续换包乱刷。刷机前应备份自己设备的 boot 和 system；需要回滚时，用同一组地址写回自己的备份。公开包不带原厂备份，也不要拿别人的 NVRAM、protect 或 userdata 来刷。
-
-## 实机效果
-
-下面都是完成升级后的 A1260 实机截图。遥控截图只是展示功能界面；公开配置已经清空旧账号和遥控器。
-
-<img width="240" alt="Square Home" src="https://github.com/user-attachments/assets/4ff43c99-f5ee-48f8-b0e7-b432a7558384" />
-<img width="240" alt="Android 11" src="https://github.com/user-attachments/assets/f14db74e-ae98-46eb-8a88-bb63092cf90e" />
-<img width="240" alt="遥控精灵" src="https://github.com/user-attachments/assets/d42ef178-4576-4cda-a31e-8a27b0fa552e" />
-<img width="240" alt="音量君" src="https://github.com/user-attachments/assets/044f76bb-fa02-43d6-8435-f3a1bf2d0c8c" />
-<img width="240" alt="遥控器列表" src="https://github.com/user-attachments/assets/73b8cd96-e3cf-4cc2-b62f-96ce35bc41eb" />
-<img width="240" alt="添加遥控器" src="https://github.com/user-attachments/assets/0b0301a6-c5db-409b-93e2-574776e22cfd" />
-<img width="240" alt="智能场景" src="https://github.com/user-attachments/assets/a094a0da-69e0-4252-951a-e05b35e3c4e3" />
-
-这是 ALC/AIC A1260 的非官方固件，只按这个型号和本文地址使用。
+[发布说明](RELEASE-NOTES.md) · [第三方资源说明](THIRD-PARTY.md) · [包内文件清单](release-manifest.json)

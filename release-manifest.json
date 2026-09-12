@@ -1,0 +1,92 @@
+{
+  "format_version": 1,
+  "release": "v1.1.0",
+  "product": "ALC/AIC Android remote A1260",
+  "soc": "MediaTek MT6580",
+  "android": "11",
+  "firmware": {
+    "system": {
+      "path": "firmware/a1260-android11-system-current.img",
+      "bytes": 1610612736,
+      "sha256": "984faeb4df4415e02b1d791158392a091abe67f815d7892ac14f46cd80662385",
+      "status": "Unchanged verified A1260 base image; exact live-device partition SHA rechecked 2026-09-12"
+    },
+    "boot": {
+      "path": "firmware/a1260-boot-android11-usap-v1.img",
+      "bytes": 16777216,
+      "sha256": "52adc739311293263f5e2b322628a6768385b88c65351b1203eae1c3f0982878",
+      "status": "Unchanged verified A1260 base image; exact live-device partition SHA rechecked 2026-09-12"
+    }
+  },
+  "hardware_validation": {
+    "wifi": true,
+    "bluetooth": true,
+    "speaker": true,
+    "vendor_infrared": true,
+    "fuse_storage": true,
+    "download": true,
+    "screensaver": true
+  },
+  "profile": {
+    "square_home": "2.1.14; current two-layout structure and display preferences retained after sanitization",
+    "icontrol": "5.2.5; clean logged-out state",
+    "removed_accounts": 2,
+    "removed_remote_profiles": 5,
+    "removed_buttons": 193,
+    "removed_ir_rows": 26,
+    "removed_scenes": 6,
+    "profile_manifest_sha256": "0b075d9ff1167e682b888e1ceedc2c4d22eccd4e14c3f30a8b333d3547a9ff69",
+    "restore_executed_on_source_device": false
+  },
+  "privacy_exclusions": [
+    "Wi-Fi credentials and network names",
+    "Bluetooth pairing records",
+    "device serial and unique identifiers",
+    "accounts and session tokens",
+    "all saved remote profiles and learned infrared data",
+    "NVRAM, nvdata, protect, userdata and raw device backups",
+    "logs, screenshots, caches and crash data"
+  ],
+  "not_included": [
+    "recovery image",
+    "original firmware backup",
+    "SP Flash Tool",
+    "MediaTek driver",
+    "Android platform-tools"
+  ],
+  "forbidden_flash_mode": "Format All + Download",
+  "base_release": "v1.0.1",
+  "packaging_date": "2026-09-12",
+  "delivery": "Complete boot/system bundle plus first-install and data-preserving existing-device update",
+  "base_images_rechecked_against_live_device": "2026-09-12; both SHA256 match; no partition writes",
+  "apps": [
+    {
+      "file": "A1260-LegacyClock-0.1.0.apk",
+      "package": "io.github.choumax.a1260clock",
+      "versionCode": 1,
+      "size": 35712,
+      "sha256": "26d154e955b04784946973a472564abb4bfe94dfd563ed0bee427dd9381628f7"
+    }
+  ],
+  "excluded_packages": [
+    "io.github.choumax.a1260xiaozhi"
+  ],
+  "firmware_ai_policy": "No XiaoZhi AI bundled, installed, updated, removed or configured by this release.",
+  "current_fixes": {
+    "dream_component": "io.github.choumax.a1260clock/io.github.choumax.a1260clock.ClockDreamService",
+    "screen_off_timeout_ms": 30000,
+    "activate_on_sleep": true,
+    "activate_on_dock": true,
+    "volumeman_output_source_on": false,
+    "volumeman_other_preferences": "preserved; restart tool if previously active output-source mode needed to be stopped"
+  },
+  "validation_v1_1_0": {
+    "existing_device_update": "PASS; clock install and all five system setting checks",
+    "existing_data_hashes": "PASS; six desktop, remote database, independent app setting/template files unchanged",
+    "isolated_android_fixture": "PASS; true-to-false single-key update, mode/other-values preservation, exact rollback",
+    "static_first_install_update_rollback": "PASS under PowerShell 7 with PowerShell 5.1-compatible syntax and UTF8 BOM",
+    "new_full_flash": "NOT RUN; unchanged verified base images",
+    "fresh_clean_profile_on_source_device": "NOT RUN to preserve existing personal data",
+    "clock_automatic_start_display": "PASS; device tests and user acceptance from current setup"
+  }
+}
